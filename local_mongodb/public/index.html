@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eventApp">
+<head>
+    <title>Event Manager</title>
+    <script src="C:/Users/Sakthi Sarvani/Desktop/webangular.min.js"></script>
+    <style>
+        body {
+            text-align: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body ng-controller="EventController">
+    <h1>Event Manager</h1>
+    <div class="form-container">
+        <h2>Add Event</h2>
+        <form ng-submit="addEvent()">
+            <label for="name">Event Name:</label>
+            <input type="text" ng-model="newEvent.name" required>
+            <span ng-show="!newEvent.name" style="color:red">Name required</span>
+            <br><br>
+            <label for="date">Date:</label>
+            <input type="date" ng-model="newEvent.date" required>
+            <span ng-show="!newEvent.date" style="color:red">Date required</span>
+            <br><br>
+            <label for="location">Location:</label>
+            <input type="text" ng-model="newEvent.location" required>
+            <span ng-show="!newEvent.location" style="color:red">Location required</span>
+            <br><br>
+            <label for="coordinator">Event Coordinator:</label>
+            <input type="text" ng-model="newEvent.coordinator" required>
+            <span ng-show="!newEvent.coordinator" style="color:red">Coordinator name required</span>
+            <br><br>
+            <label for="email">Coordinator Email:</label>
+            <input type="email" ng-model="newEvent.email" required>
+            <span ng-show="!newEvent.email" style="color:red">Email required</span>
+            <br><br>
+            <label for="description">Description:</label>
+            <textarea ng-model="newEvent.description"></textarea>
+            <br><br>
+            <button type="submit" ng-disabled="!newEvent.name || !newEvent.date || !newEvent.location || !newEvent.coordinator || !newEvent.email">Add Event</button>
+        </form>
+    </div>
+    <br><br><br>
+    <!-- Event list display -->
+    <div class="event-list">
+        <h2>Event List</h2>
+        <ul>
+            <li ng-repeat="event in events">
+                <strong>{{event.name}}</strong> - {{event.date | date:'MM/dd/yyyy'}} ({{event.location}}) - {{event.coordinator}} ({{event.email}})
+                <button ng-click="deleteEvent(event._id)">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Define AngularJS application module
+        const app = angular.module('eventApp', []);
+        
+        // Define controller for the application
+        app.controller('EventController', function ($scope, $http) {
+            $scope.events = [];
+            $scope.newEvent = {};
+        
+            // Function to fetch all events from the server
+            $scope.fetchEvents = function () {
+                $http.get('/get-events')
+                    .then(function (response) {
+                        $scope.events = response.data;
+                    }, function (error) {
+                        console.error('Error fetching events:', error);
+                    });
+            };
+        
+            // Function to add a new event
+            $scope.addEvent = function () {
+                $http.post('/add-event', $scope.newEvent)
+                    .then(function (response) {
+                        alert(response.data.message);
+                        $scope.fetchEvents(); // Refresh the event list
+                        $scope.newEvent = {}; // Clear form
+                    }, function (error) {
+                        alert('Error adding event:', error);
+                    });
+            };
+        
+            // Function to delete an event
+            $scope.deleteEvent = function (id) {
+                $http.delete('/delete-event/' + id)
+                    .then(function (response) {
+                        alert(response.data.message);
+                        $scope.fetchEvents(); // Refresh the event list
+                    }, function (error) {
+                        alert('Error deleting event:', error);
+                    });
+            };
+        
+            // Initialize by fetching the events
+            $scope.fetchEvents();
+        });
+    </script>
+</body>
+</html>
