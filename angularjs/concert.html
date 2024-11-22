@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html ng-app="conApp">
+<head>
+    <title>Concert</title>
+    <script src="angular.min.js"></script>
+    <script src="angular-animate.js"></script>
+    <style>
+        body {
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fade.ng-enter {
+        transition: all 0.5s ease-in-out;
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    .fade.ng-enter-active {
+        transform: scale(1);
+        opacity: 1;
+    }
+    .fade.ng-leave {
+        transition: all 0.5s ease-in-out;
+        transform: scale(1);
+        opacity: 1;
+    }
+    .fade.ng-leave-active {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    </style>
+</head>
+<body ng-controller="conControl">
+    <h1>Concert Booking</h1>
+    <form name="conForm" ng-submit="submitForm()">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" ng-model="name" required>
+        <br>
+        <span ng-show="!name" style="color:red">Username should not be empty</span>
+        <br>
+
+        <label for="age">Age :</label>
+        <input type="number" id="age" name="age" ng-model="age" required>
+        <br>
+        <span ng-show="!age" style="color:red">Age should not be empty</span>
+        <span ng-show="age <= 12" style="color:red">Age should be greater than 12</span>
+        <br>
+
+        <label for="email">Email : </label>
+        <input type="email" id="email" name="email" ng-model="email" required>
+        <br>
+        <span ng-show="!email" style="color:red">Enter correct email address</span>
+        <span ng-show="conForm.email.$error.email && email" style="color:red">Enter a valid email address</span>
+        <br>
+
+        <label for="phn">Phn no :</label>
+        <input type="text" id="phn" name="phn" ng-model="phn" required maxlength="10">
+        <br>
+        <span ng-show="!phn" style="color:red">Phn no should not be empty</span>
+        <span ng-show="phn.length !== 10 && phn.length > 0" style="color:red">Phn no length should be equal to 10</span>
+        <br>
+
+        <h4>Search concerts:</h4>
+        <input type="text" name="search" ng-model="search">
+        
+        <h3><i>Available concerts</i></h3>
+        <table>
+            <tr>
+                <th>Concert Name</th>
+                <th>Artist</th>
+                <th>Date</th>
+            </tr>
+            <tr ng-repeat="concert in concerts | filter:search">
+                <td>{{concert.title}}</td>
+                <td>{{concert.artist}}</td>
+                <td>{{concert.date}}</td>
+            </tr>
+        </table>
+
+        <br><br>
+        <label for="concert">Select Concert : </label>
+        <!-- Concert Selection Dropdown -->
+        <select ng-model="conSelect">
+            <option value="" disabled selected>Select a concert</option>
+            <option ng-repeat="con in conList" value="{{con}}">{{con}}</option> <!-- Populate options correctly -->
+        </select>
+        <span ng-show="!conSelect" style="color:red">Choose one concert</span>
+        <br><br>
+        <label for="tickets">No of Ticket(s)</label>
+        <input type="number" id="tickets" name="tickets" ng-model="tickets" min=1 required>
+        <br>
+        <span ng-show="!tickets" style="color:red">Enter ticket</span>
+        <br>
+        <div>
+            <label>Payment Type</label>
+            <label>
+                <input type="radio" name="payment" ng-model="payment" value="UPI">UPI</label>
+            </label>
+            <label>
+                <input type="radio" name="payment" ng-model="payment" value="Credit">Credit Card</label>
+            </label>
+            <label>
+                <input type="radio" name="payment" ng-model="payment" value="Debit">Debit Card</label>
+            </label>
+        </div>
+<br>
+        <!-- Submit Button -->
+        <button type="submit" ng-disabled="!name || !age || age <= 12 || !conForm.email.$valid || !phn || phn.length !== 10 || !conSelect">Submit</button> 
+    </form>
+
+     <!-- Details Display -->
+     <div class="fade" ng-if="bookingDetails">
+        <h3>Booking Details</h3>
+        <p><strong>Name:</strong> {{bookingDetails.name}}</p>
+        <p><strong>Age:</strong> {{bookingDetails.age}}</p>
+        <p><strong>Phone:</strong> {{bookingDetails.phn}}</p>
+        <p><strong>Email:</strong> {{bookingDetails.email}}</p>
+        <p><strong>Concert:</strong> {{bookingDetails.conSelect}}</p>
+        <p><strong>No of Tickets:</strong> {{bookingDetails.tickets}}</p>
+        <p><strong>Total Cost:</strong> ₹{{bookingDetails.totalCost}}</p>
+    </div>
+
+
+    <!-- AngularJS Application Script -->
+    <script>
+        var app = angular.module("conApp", ['ngAnimate']);
+        
+        app.service("conList", function() {
+            this.concerts = [
+                {title: "World Tour", artist: "BTS", date: "17-11-2024",ticketPrice:10000},
+                {title: "Classic", artist: "Ilayaraja", date: "20-11-2024",ticketPrice:5000},
+                {title: "Rockers", artist: "AR Rahman", date: "23-11-2004",ticketPrice:8000}
+            ];
+            this.getConcerts = function() {
+                return this.concerts;
+            }
+        });
+
+        app.factory("conTList", function() {
+            var list = ["World Tour","Classic","Rockers"];
+            return {
+                getConcertList: function() {
+                    return list;
+                }
+            };
+        });
+
+         // Define a custom filter for capitalizing the first letter of events
+    app.filter('capitalize', function() {
+        return function(input) {
+            if (input) {
+                return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+            }
+        };
+    });
+
+        app.controller("conControl", function($scope, conList, conTList) {
+            $scope.concerts = conList.getConcerts();
+            $scope.conList = conTList.getConcertList();
+
+            $scope.submitForm = function() {
+                if ($scope.name && $scope.age > 12 && $scope.phn.length === 10) {
+                    let selectedConcert = $scope.concerts.find(concert => concert.title === $scope.conSelect);
+            let ticketPrice = selectedConcert.ticketPrice; // Get ticket price
+            let totalCost = ticketPrice * $scope.tickets; // Calculate total cost
+            $scope.bookingDetails = {
+                        name: $scope.name,
+                        age: $scope.age,
+                        phn: $scope.phn,
+                        email: $scope.email,
+                        conSelect: $scope.conSelect,
+                        tickets: $scope.tickets,
+                        totalCost: totalCost
+                    };
+                }
+            };
+        });
+    </script>
+</body>
+</html>
