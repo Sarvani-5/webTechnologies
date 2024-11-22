@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="stud.xsd">
+        <student id="1">
+            <name>Sakthi</name>
+            <age>20</age>
+            <course>IT</course>
+            <address>Madurai</address>
+            <phone>9751423916</phone>
+            <dob>2004-11-23</dob>
+            <Jyear>2022</Jyear>
+        </student>
+        <student id="2">
+            <name>Roshini</name>
+            <age>19</age>
+            <course>ECE</course>
+            <phone>9940467525</phone>
+            <dob>2005-09-08</dob>
+            <Jyear>2023</Jyear>
+        </student>
+        <student id="3">
+            <name>Harshi</name>
+            <age>19</age>
+            <course>CSE</course>
+            <address>Coimbatore</address>
+            <phone>9444901665</phone>
+            <dob>2005-12-01</dob>
+            <Jyear>2023</Jyear>
+        </student>
+    </students>

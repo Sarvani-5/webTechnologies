@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Details</h1>
+
+    <!-- Table to display book details -->
+    <h2>Books Details in Table Format:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="bookTable">
+            <!-- Book details will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure it as a GET request to the book.json file
+        xhr.open("GET", "book.json", true);
+
+        // Set up what happens when the request completes
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Parse the JSON response
+                var books = JSON.parse(xhr.responseText);
+
+                // Get the tbody element where we want to insert the data
+                var tableBody = document.getElementById('bookTable');
+
+                // Loop through the books and populate the table
+                books.forEach(function(book) {
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.category}</td>
+                        <td>${book.price}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                // Handle error if the request fails
+                console.error('Error loading the JSON file');
+            }
+        };
+
+        // Send the request
+        xhr.send();
+    </script>
+</body>
+</html>

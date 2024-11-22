@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="#s"?>
+<catalog>
+  <cd>
+    <title>Picture book</title>
+    <artist>Simply Red</artist>
+    <country>EU</country>
+    <company>Elektra</company>
+    <price>7.20</price>
+    <year>1985</year>
+  </cd>
+  <cd>
+    <title>Red</title>
+    <artist>The Communards</artist>
+    <country>UK</country>
+    <company>London</company>
+    <price>7.80</price>
+    <year>1987</year>
+  </cd>
+  <cd>
+    <title>Unchain my heart</title>
+    <artist>Joe Cocker</artist>
+    <country>USA</country>
+    <company>EMI</company>
+    <price>8.20</price>
+    <year>1987</year>
+  </cd>
+<xsl:stylesheet id="s" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="html" indent="yes"/>
+<xsl:template match="/">
+<html> 
+<head>
+<style>
+table {
+            border-collapse: collapse;
+          }
+          table, th, td {
+            border: 1px solid black;
+          }
+          </style>
+          </head>
+<body>
+  <h2>My CD Collection</h2>
+  <table border="1">
+    <tr bgcolor="#9acd32">
+      <th style="text-align:left">Title</th>
+      <th style="text-align:left">Artist</th>
+    </tr>
+    <xsl:for-each select="catalog/cd">
+    <xsl:sort select="title"/>
+    <tr>
+      <td><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="artist"/></td>
+    </tr>
+    </xsl:for-each>
+  </table>
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
+</catalog>

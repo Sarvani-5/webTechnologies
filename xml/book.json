@@ -1,0 +1,23 @@
+[
+    {
+        "id": "22IT004",
+        "title": "WEB",
+        "author": "sakthi",
+        "category": "Web Technologies",
+        "price": "500"
+    },
+    {
+        "id": "22IT005",
+        "title": "INTRO TO PROGRAMMING",
+        "author": "ANNA SMITH",
+        "category": "Computer Science",
+        "price": "400"
+    },
+    {
+        "id": "22IT006",
+        "title": "DATA STRUCTURES & ALGORITHMS",
+        "author": "MICHAEL JOHN",
+        "category": "Computer Science",
+        "price": "600"
+    }
+]

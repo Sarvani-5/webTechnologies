@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Information</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Course</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Date of Birth</th>
+        </tr>
+        </thead>
+        <tbody id="studentTable">
+        </tbody>
+    </table>
+
+    <script type="text/xml" id="xmlData">
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE students [
+        <!ELEMENT students (student+)>
+        <!ELEMENT student (name, age, course, address?, phone, dob)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT age (#PCDATA)>
+        <!ELEMENT course (#PCDATA)>
+        <!ELEMENT address (#PCDATA)>
+        <!ELEMENT phone (#PCDATA)>
+        <!ELEMENT dob (#PCDATA)>
+        <!ATTLIST student id CDATA #REQUIRED>
+        ]>
+        <students>
+            <student id="1">
+                <name>Sakthi</name>
+                <age>20</age>
+                <course>IT</course>
+                <address>Madurai</address>
+                <phone>9751423916</phone>
+                <dob>23-11-2004</dob>
+            </student>
+            <student id="2">
+                <name>Roshini</name>
+                <age>19</age>
+                <course>ECE</course>
+                <phone>9940467525</phone>
+                <dob>08-09-2005</dob>
+            </student>
+            <student id="3">
+                <name>Harshi</name>
+                <age>19</age>
+                <course>CSE</course>
+                <address>Coimbatore</address>
+                <phone>9444901665</phone>
+                <dob>01-12-2005</dob>
+            </student>
+        </students>
+    </script>
+
+    <script>
+        const xmlString = document.getElementById('xmlData').textContent.trim();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
+        let studentData = '';
+        const students = xmlDoc.getElementsByTagName('student');
+        for (let i = 0; i < students.length; i++) {
+            const student = students[i];
+            const name = student.getElementsByTagName('name')[0].childNodes[0].nodeValue;
+            const age = student.getElementsByTagName('age')[0].childNodes[0].nodeValue;
+            const course = student.getElementsByTagName('course')[0].childNodes[0].nodeValue;
+            const address = student.getElementsByTagName('address')[0] ? student.getElementsByTagName('address')[0].childNodes[0].nodeValue : 'N/A';
+            const phone = student.getElementsByTagName('phone')[0].childNodes[0].nodeValue;
+            const dob = student.getElementsByTagName('dob')[0].childNodes[0].nodeValue;
+            studentData += 
+                `<tr>
+                    <td>${name}</td>
+                    <td>${age}</td>
+                    <td>${course}</td>
+                    <td>${address}</td>
+                    <td>${phone}</td>
+                    <td>${dob}</td>
+                </tr>`;
+        }
+
+        // Insert the student data into the table
+        document.getElementById('studentTable').innerHTML = studentData;
+    </script>
+</body>
+</html>

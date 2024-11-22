@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Table</title>
+</head>
+<body>
+
+    <h1 id="demo" style="color:blue"></h1>
+
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "File1.xml", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                func(this);
+            }
+        };
+        xhttp.send();
+
+        function func(xml) {
+            var x, i, txt, xm;
+            txt = "<table border='1'><tr><th>Name</th><th>ID</th><th>Dept</th><th>Salary</th></tr>";
+            xm = xml.responseXML;
+            x = xm.getElementsByTagName("emp");
+            for (i = 0; i < x.length; i++) {
+                txt += "<tr><td>" +
+                    x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue +
+                    "</td><td>" +
+                    x[i].getAttribute("eid") +
+                    "</td><td>" +
+                    x[i].getAttribute("dept") +
+                    "</td><td>" +
+                    x[i].getElementsByTagName("sal")[0].childNodes[0].nodeValue +
+                    "</td></tr>";
+            }
+            txt += "</table>";
+            document.getElementById("demo").innerHTML = txt;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Example</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Books in Table Format</h2>
+
+    <!-- Table for displaying book details -->
+    <table id="bookTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <h2>Converted JavaScript Object to JSON:</h2>
+    <p id="jsonOutput"></p>
+
+    <script>
+        // JSON string of book details
+        const jsonString = `[
+            {
+                "title": "JavaScript: The Good Parts",
+                "author": "Douglas Crockford",
+                "year": 2008,
+                "price": 25.99
+            },
+            {
+                "title": "Eloquent JavaScript",
+                "author": "Marijn Haverbeke",
+                "year": 2018,
+                "price": 19.99
+            },
+            {
+                "title": "Clean Code",
+                "author": "Robert C. Martin",
+                "year": 2008,
+                "price": 35.99
+            }
+        ]`;
+
+        // Parse the JSON string into a JavaScript object (array of books)
+        const booksArray = JSON.parse(jsonString);
+
+        // Reference to the table body by ID
+        const tableBody = document.getElementById('tableBody');
+        let rows = '';
+
+        // Using a simple for loop to generate table rows
+        for (let i = 0; i < booksArray.length; i++) {
+            rows += `
+                <tr>
+                    <td>${booksArray[i].title}</td>
+                    <td>${booksArray[i].author}</td>
+                    <td>${booksArray[i].year}</td>
+                    <td>$${booksArray[i].price}</td>
+                </tr>
+            `;
+        }
+
+        // Set the innerHTML of the table body
+        tableBody.innerHTML = rows;
+
+        // Create a JavaScript object with book details
+        const booksObject = [
+            {
+                title: "Learning React",
+                author: "Alex Banks",
+                year: 2020,
+                price: 29.99
+            },
+            {
+                title: "Node.js Design Patterns",
+                author: "Mario Casciaro",
+                year: 2014,
+                price: 39.99
+            }
+        ];
+
+        // Convert the JavaScript object to JSON string and display it
+        const jsonOutput = JSON.stringify(booksObject, null, 2); // `null, 2` adds pretty formatting
+        document.getElementById('jsonOutput').textContent = jsonOutput;
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE students SYSTEM "stud.dtd">
+<students>
+    <student id="1">
+        <name>Sakthi</name>
+        <age>20</age>
+        <course>IT</course>
+        <address>Madurai</address>
+        <phone>9751423916</phone>
+        <dob>23-11-2004</dob>
+        <Jyear>2022</year>
+    </student>
+    <student id="2">
+        <name>Roshini</name>
+        <age>19</age>
+        <course>ECE</course>
+        <phone>9940467525</phone>
+        <dob>08-09-2005</dob>
+        <Jyear>2023</Jyear>
+    </student>
+    <student id="3">
+        <name>Harshi</name>
+        <age>19</age>
+        <course>CSE</course>
+        <address>Coimbatore</address>
+        <phone>9444901665</phone>
+        <dob>01-12-2005</dob>
+        <Jyear>2023</Jyear>
+    </student>
+</students>
